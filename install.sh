@@ -6,28 +6,62 @@ APP_DIR="/usr/local/share/hand-sensor"
 # Repository URL
 REPO_URL="https://github.com/sergioloppe/rasp-pi-hand-sensor.git"
 
+# Path to the Python virtual environment within the app directory
+VENV_PATH="$APP_DIR/venv"
+
 # Create the application directory
 echo "Creating the application directory..."
 sudo mkdir -p "$APP_DIR"
 
-# Clone the repository
-echo "Cloning the app repository into $APP_DIR..."
-sudo git clone "$REPO_URL" "$APP_DIR" || { echo "Failed to clone repository."; exit 1; }
-
-# Change ownership to the current user to install dependencies without sudo
-echo "Changing ownership of $APP_DIR..."
+# Adjust the permissions so the current user can install files
+echo "Adjusting permissions..."
 sudo chown -R $(whoami) "$APP_DIR"
 
-# Install dependencies (if any)
-echo "Installing dependencies..."
-pip3 install -r "$APP_DIR/requirements.txt" || { echo "Failed to install dependencies."; exit 1; }
+# Clone the repository
+echo "Cloning the app repository into $APP_DIR..."
+git clone "$REPO_URL" "$APP_DIR" || { echo "Failed to clone repository."; exit 1; }
 
-# Setup and enable the systemd service
-echo "Setting up the systemd service..."
-SERVICE_FILE="$APP_DIR/hand-sensor.service"
-sudo cp "$SERVICE_FILE" /etc/systemd/system/
+# Create a Python virtual environment
+echo "Creating a Python virtual environment..."
+python3 -m venv "$VENV_PATH"
+
+# Activate the virtual environment
+source "$VENV_PATH/bin/activate"
+
+# Install dependencies
+echo "Installing dependencies..."
+pip install -r "$APP_DIR/requirements.txt" || { echo "Failed to install dependencies."; exit 1; }
+
+# Deactivate the virtual environment
+deactivate
+
+# Prepare the systemd service file to use the virtual environment's Python interpreter
+SERVICE_CONTENT="[Unit]
+Description=Your App Description
+After=network.target
+
+[Service]
+ExecStart=$VENV_PATH/bin/python /path/to/your/main.py
+WorkingDirectory=$APP_DIR
+StandardOutput=inherit
+StandardError=inherit
+Restart=always
+User=$(whoami)
+
+[Install]
+WantedBy=multi-user.target
+"
+
+# Create the service file
+echo "$SERVICE_CONTENT" | sudo tee /etc/systemd/system/hand-sensor.service > /dev/null
+
+# Reload systemd to recognize the new service
 sudo systemctl daemon-reload
+
+# Enable the service to start on boot
 sudo systemctl enable hand-sensor.service
+
+# Start the service
 sudo systemctl start hand-sensor.service
 
-echo "Installation completed successfully."
+echo "Installation and service setup completed successfully."
