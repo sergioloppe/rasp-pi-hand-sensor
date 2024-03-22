@@ -41,7 +41,7 @@ Description=Your App Description
 After=network.target
 
 [Service]
-ExecStart=$VENV_PATH/bin/python /path/to/your/main.py
+ExecStart=$VENV_PATH/bin/python $APP_DIR/main.py
 WorkingDirectory=$APP_DIR
 StandardOutput=inherit
 StandardError=inherit
