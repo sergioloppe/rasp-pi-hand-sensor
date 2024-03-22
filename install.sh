@@ -4,7 +4,7 @@
 APP_DIR="/usr/local/share/hand-sensor"
 
 # Repository URL
-REPO_URL="https://github.com/username/your-repository.git"
+REPO_URL="https://github.com/sergioloppe/rasp-pi-hand-sensor.git"
 
 # Create the application directory
 echo "Creating the application directory..."
