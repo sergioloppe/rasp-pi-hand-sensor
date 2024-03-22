@@ -1,21 +1,12 @@
 import os
 from time import sleep
+import keyboard
 
-from pynput.keyboard import Controller
-
-keyboard = Controller()
-
-try:
-    sleep(10)
-    keyboard.press('a')
-    keyboard.release('a')
-except OSError:
-    print('No sensor found.')
-    os._exit(1)
-
-except Exception as e:
-    print(f"Unexpected error: {e}")
-    os._exit(2)
-
-finally:
-    print("Ciao ciao Alex")
+keyboard.write("Python is an amazing programming language.")
+keyboard.press_and_release("enter")
+keyboard.press_and_release("shift+p")
+keyboard.press_and_release("y")
+keyboard.press_and_release("t")
+keyboard.press_and_release("h")
+keyboard.press_and_release("o")
+keyboard.press_and_release("n")
