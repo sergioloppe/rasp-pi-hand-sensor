@@ -3,8 +3,8 @@ Description=Your App Description
 After=network.target
 
 [Service]
-ExecStart=/usr/bin/python3 /path/to/your/main.py
-WorkingDirectory=/path/to/your
+ExecStart=/usr/bin/python3 /usr/local/share/hand-sensor/main.py
+WorkingDirectory=/usr/local/share/hand-sensor
 StandardOutput=inherit
 StandardError=inherit
 Restart=always
