@@ -1,9 +1,12 @@
 import os
+from time import sleep
+
 from pynput.keyboard import Controller
 
 keyboard = Controller()
 
 try:
+    sleep(10)
     keyboard.press('a')
     keyboard.release('a')
 except OSError:
