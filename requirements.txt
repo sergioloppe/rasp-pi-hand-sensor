@@ -3,4 +3,4 @@ RPi.GPIO==0.7.1
 apds9960==0.2
 smbus==1.1.post2
 smbus2==0.4.3
-keyboard==0.13.5
+

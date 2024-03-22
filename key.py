@@ -1,12 +1,23 @@
 import os
+import random
 from time import sleep
-import keyboard
+from pynput.keyboard import Controller
 
-keyboard.write("Python is an amazing programming language.")
-keyboard.press_and_release("enter")
-keyboard.press_and_release("shift+p")
-keyboard.press_and_release("y")
-keyboard.press_and_release("t")
-keyboard.press_and_release("h")
-keyboard.press_and_release("o")
-keyboard.press_and_release("n")
+keyboard = Controller()
+
+alphabet = 'abcdefghijklmnopqrstuvwxyz'
+
+try:
+    while True:
+        random_letter = random.choice(alphabet)
+        sleep(1)
+        keyboard.press(random_letter)
+        keyboard.release(random_letter)
+        print(f"Sent letter: {random_letter}")
+except KeyboardInterrupt:
+    print("Script interrupted by user.")
+except Exception as e:
+    print(f"Unexpected error: {e}")
+    os._exit(2)
+finally:
+    print("Ciao ciao Alex")
